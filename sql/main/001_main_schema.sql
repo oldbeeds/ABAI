@@ -1,0 +1,22 @@
+-- 001_main_schema.sql
+CREATE TABLE dbo.Tenant (
+  TenantId INT IDENTITY(1,1) PRIMARY KEY,
+  Name NVARCHAR(200) NOT NULL,
+  IsActive BIT NOT NULL DEFAULT 1
+);
+
+CREATE TABLE dbo.Users (
+  UserId INT IDENTITY(1,1) PRIMARY KEY,
+  Email NVARCHAR(255) NOT NULL UNIQUE,
+  PasswordHash NVARCHAR(255) NOT NULL,
+  IsActive BIT NOT NULL DEFAULT 1
+);
+
+CREATE TABLE dbo.Source (
+  SourceId INT IDENTITY(1,1) PRIMARY KEY,
+  TenantId INT NOT NULL,
+  Name NVARCHAR(100) NOT NULL,
+  ConnectionString NVARCHAR(1000) NOT NULL,
+  IsDefault BIT NOT NULL DEFAULT 0,
+  FOREIGN KEY (TenantId) REFERENCES dbo.Tenant(TenantId)
+);
